@@ -6,5 +6,6 @@ export const getCurrentAddress = async () => {
     return address;
   } catch (e) {
     console.log(e);
+    throw new Error("Please connect your metamask account");
   }
 };

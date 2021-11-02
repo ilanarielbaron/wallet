@@ -6,10 +6,8 @@ interface ConnectProps {
   pending: boolean;
 }
 
-export const Connect = ({ handleConnect, pending }: ConnectProps) => {
-  return (
-    <Button primary onClick={handleConnect}>
-      {pending ? <Loader active inline="centered" size="tiny" /> : "Connect"}
-    </Button>
-  );
-};
+export const Connect = ({ handleConnect, pending }: ConnectProps) => (
+  <Button primary onClick={handleConnect}>
+    {pending ? <Loader active inline="centered" size="tiny" /> : "Connect"}
+  </Button>
+);

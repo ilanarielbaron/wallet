@@ -6,32 +6,40 @@ import { FETCH_WALLET_REQUEST } from "./actionTypes";
 import { formatUnits } from "ethers/lib/utils";
 import { dummyAbi } from "../../utils/dummyAbi";
 import { getCurrentAddress } from "../../utils/metamaskUtils";
+import { toast } from "react-toastify";
 
 const getWallet = async () => {
   const address = await getCurrentAddress();
 
-  if(!address) {
-    return {
-      isConnected: false,
-    };
+  if (!address) {
+    throw new Error("Please connect your metamask account");
   }
 
-  const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-  const contract = new ethers.Contract(
-    "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    dummyAbi,
-    signer
-  );
-  const symbol = await contract.symbol();
-  const balance = formatUnits(await contract.balanceOf(address), 0);
+  const dummyAddress = process.env.REACT_APP_DUMMY_ADDRESS;
 
-  return {
-    isConnected: true,
-    address: address,
-    balance: balance,
-    symbol: symbol,
-    contract: contract,
-  };
+  if (!dummyAddress) {
+    throw new Error("There is an unexpected error");
+  }
+
+  try {
+    const signer = new ethers.providers.Web3Provider(
+      window.ethereum
+    ).getSigner();
+    const contract = new ethers.Contract(dummyAddress, dummyAbi, signer);
+    const symbol = await contract.symbol();
+    const balance = formatUnits(await contract.balanceOf(address), 0);
+
+    return {
+      isConnected: true,
+      address: address,
+      balance: balance,
+      symbol: symbol,
+      contract: contract,
+    };
+  } catch (e) {
+    console.log(e);
+    throw new Error("There is an unexpected error");
+  }
 };
 
 function* fetchWalletSaga() {
@@ -48,6 +56,7 @@ function* fetchWalletSaga() {
         error: e.message,
       })
     );
+    toast.error(e.message);
   }
 }
 

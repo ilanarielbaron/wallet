@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Redirect } from "react-router-dom";
 import { Divider, Footer, Navbar } from "decentraland-ui";
 import { Routes } from "./components/Routes";
+import "react-toastify/dist/ReactToastify.css";
 
 declare global {
   interface Window {
@@ -11,6 +12,7 @@ declare global {
 
 const App = () => {
   const [isDappEnabled, setIsDappEnabled] = useState(true);
+
   useEffect(() => {
     setIsDappEnabled(!!window.ethereum);
   }, []);

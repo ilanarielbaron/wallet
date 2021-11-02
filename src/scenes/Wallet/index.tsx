@@ -1,35 +1,28 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { getWalletSelector } from "../../store/wallet/selectors";
+import {
+  getErrorSelector,
+  getWalletSelector,
+} from "../../store/wallet/selectors";
 import { Redirect } from "react-router-dom";
-import { Button, Card, CardContent } from "decentraland-ui";
+import { Card } from "decentraland-ui";
 import "./Wallet.css";
 import { TransferModal } from "../../components/Transfer";
+import { WalletContent } from "./WalletContent";
 
 export const Wallet = () => {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const wallet = useSelector(getWalletSelector);
+  const error = useSelector(getErrorSelector);
 
-  if (!wallet.address) {
+  if (!wallet.address || error) {
     return <Redirect to="/" />;
   }
 
   return (
     <>
       <Card>
-        <CardContent>
-          <h2>Wallet</h2>
-          <p>
-            <span className="bold">Address:</span> {wallet.address}
-          </p>
-          <p>
-            <span className="bold">Balance:</span> {wallet.balance}{" "}
-            {wallet.symbol}
-            <Button basic onClick={() => setIsTransferOpen(true)}>
-              Transfer
-            </Button>
-          </p>
-        </CardContent>
+        <WalletContent setIsTransferOpen={setIsTransferOpen} wallet={wallet} />
       </Card>
       <TransferModal
         isTransferOpen={isTransferOpen}
