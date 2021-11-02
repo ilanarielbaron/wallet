@@ -1,7 +1,10 @@
 export const getCurrentAddress = async () => {
-  const [address] = await window.ethereum.request({
-    method: "eth_requestAccounts",
-  });
-
-  return address;
+  try {
+    const [address] = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    return address;
+  } catch (e) {
+    console.log(e);
+  }
 };

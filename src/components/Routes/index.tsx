@@ -1,7 +1,7 @@
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Home } from "../../scenes/Home";
 import { NoWallet } from "../../scenes/NoWallet";
-import React from "react";
 import { Wallet } from "../../scenes/Wallet";
 import { Page } from "decentraland-ui";
 import "./general.css";

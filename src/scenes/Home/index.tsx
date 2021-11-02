@@ -1,13 +1,13 @@
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getErrorSelector,
   getPendingSelector,
   getWalletSelector,
 } from "../../store/wallet/selectors";
-import React, { useCallback, useEffect } from "react";
 import { fetchWalletRequest } from "../../store/wallet/actions";
-import { Button, Loader } from "decentraland-ui";
 import { Redirect } from "react-router-dom";
+import { Connect } from "../../components/Connect";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -20,27 +20,17 @@ export const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    window.ethereum.on("accountsChanged", function (accounts: string[]) {
-      if (!accounts.length) {
-        console.log("Error");
-      } else {
-        handleConnect();
-      }
+    window.ethereum.on("accountsChanged", () => {
+      handleConnect();
     });
   }, [handleConnect]);
 
   return (
     <>
-      {pending ? (
-        <Button primary onClick={handleConnect}>
-          <Loader active inline="centered" size="tiny" />
-        </Button>
-      ) : error ? (
-        <div>Error</div>
+      {error ? (
+        <div>{error}</div>
       ) : !wallet.isConnected ? (
-        <Button primary onClick={handleConnect}>
-          Connect
-        </Button>
+        <Connect handleConnect={handleConnect} pending={pending} />
       ) : (
         <Redirect to="/wallet" />
       )}

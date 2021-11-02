@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getWalletSelector } from "../../store/wallet/selectors";
-import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Card, CardContent } from "decentraland-ui";
 import "./Wallet.css";

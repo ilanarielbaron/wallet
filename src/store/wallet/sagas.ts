@@ -9,6 +9,13 @@ import { getCurrentAddress } from "../../utils/metamaskUtils";
 
 const getWallet = async () => {
   const address = await getCurrentAddress();
+
+  if(!address) {
+    return {
+      isConnected: false,
+    };
+  }
+
   const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
   const contract = new ethers.Contract(
     "0x5FbDB2315678afecb367f032d93F642f64180aa3",
