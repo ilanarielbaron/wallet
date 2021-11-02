@@ -1,34 +1,39 @@
-import {useDispatch, useSelector} from "react-redux";
-import {getErrorSelector, getPendingSelector, getTodosSelector} from "../../store/todo/selectors";
-import React, {useEffect} from "react";
-import {fetchTodoRequest} from "../../store/todo/actions";
-import {Page} from 'decentraland-ui'
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getErrorSelector,
+  getPendingSelector,
+  getWalletSelector,
+} from "../../store/wallet/selectors";
+import React from "react";
+import { fetchWalletRequest } from "../../store/wallet/actions";
+import { Button, Loader } from "decentraland-ui";
+import { Redirect } from "react-router-dom";
 
 export const Home = () => {
-    const dispatch = useDispatch();
-    const pending = useSelector(getPendingSelector);
-    const todos = useSelector(getTodosSelector);
-    const error = useSelector(getErrorSelector);
+  const dispatch = useDispatch();
+  const pending = useSelector(getPendingSelector);
+  const wallet = useSelector(getWalletSelector);
+  const error = useSelector(getErrorSelector);
 
-    useEffect(() => {
-        dispatch(fetchTodoRequest());
-    }, [dispatch]);
+  const handleConnect = () => {
+    dispatch(fetchWalletRequest());
+  };
 
-    return (
-            <>
-                <Page>
-                    {pending ? (
-                        <div>Loading...</div>
-                    ) : error ? (
-                        <div>Error</div>
-                    ) : (
-                        todos.map((todo, index) => (
-                            <div style={{marginBottom: "10px"}} key={todo.id}>
-                                {++index}. {todo.title}
-                            </div>
-                        ))
-                    )}
-                </Page>
-            </>
-    );
+  return (
+    <>
+      {pending ? (
+        <Button primary onClick={handleConnect}>
+          <Loader active inline="centered" size="tiny" />
+        </Button>
+      ) : error ? (
+        <div>Error</div>
+      ) : !wallet.isConnected ? (
+        <Button primary onClick={handleConnect}>
+          Connect
+        </Button>
+      ) : (
+        <Redirect to="/wallet" />
+      )}
+    </>
+  );
 };

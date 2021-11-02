@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import todoReducer from "./todo/reducer";
+import walletReducer from "./wallet/reducer";
 
 const rootReducer = combineReducers({
-    todo: todoReducer,
+  wallet: walletReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

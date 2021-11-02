@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.container > div.ui {
+    display: flex;
+    justify-content: center;
+}
