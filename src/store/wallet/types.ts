@@ -1,3 +1,4 @@
+import { Contract } from "ethers";
 import {
   FETCH_WALLET_REQUEST,
   FETCH_WALLET_SUCCESS,
@@ -10,6 +11,7 @@ export interface IWallet {
   isConnected: boolean;
   completed?: boolean;
   symbol?: string;
+  contract?: Contract;
 }
 
 export interface WalletState {

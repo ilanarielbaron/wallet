@@ -4,7 +4,7 @@ import {
   getPendingSelector,
   getWalletSelector,
 } from "../../store/wallet/selectors";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { fetchWalletRequest } from "../../store/wallet/actions";
 import { Button, Loader } from "decentraland-ui";
 import { Redirect } from "react-router-dom";
@@ -15,9 +15,19 @@ export const Home = () => {
   const wallet = useSelector(getWalletSelector);
   const error = useSelector(getErrorSelector);
 
-  const handleConnect = () => {
+  const handleConnect = useCallback(() => {
     dispatch(fetchWalletRequest());
-  };
+  }, [dispatch]);
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", function (accounts: string[]) {
+      if (!accounts.length) {
+        console.log("Error");
+      } else {
+        handleConnect();
+      }
+    });
+  }, [handleConnect]);
 
   return (
     <>

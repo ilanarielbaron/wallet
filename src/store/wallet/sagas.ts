@@ -4,17 +4,17 @@ import { ethers } from "ethers";
 import { fetchWalletFailure, fetchWalletSuccess } from "./actions";
 import { FETCH_WALLET_REQUEST } from "./actionTypes";
 import { formatUnits } from "ethers/lib/utils";
-import { abi } from "./abi";
+import { dummyAbi } from "../../utils/dummyAbi";
+import { getCurrentAddress } from "../../utils/metamaskUtils";
 
 const getWallet = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
+  const address = await getCurrentAddress();
+  const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
   const contract = new ethers.Contract(
     "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    abi,
+    dummyAbi,
     signer
   );
-  const address = await signer.getAddress();
   const symbol = await contract.symbol();
   const balance = formatUnits(await contract.balanceOf(address), 0);
 
@@ -23,6 +23,7 @@ const getWallet = async () => {
     address: address,
     balance: balance,
     symbol: symbol,
+    contract: contract,
   };
 };
 
