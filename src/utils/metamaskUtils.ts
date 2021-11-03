@@ -9,3 +9,7 @@ export const getCurrentAddress = async () => {
     throw new Error("Please connect your metamask account");
   }
 };
+
+window.ethereum.on("chainChanged", () => {
+  window.location.reload();
+});

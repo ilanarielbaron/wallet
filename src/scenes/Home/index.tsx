@@ -19,9 +19,10 @@ export const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    window.ethereum.on("accountsChanged", () => {
-      handleConnect();
-    });
+    window.ethereum.on("accountsChanged", handleConnect);
+    return () => {
+      window.ethereum.removeListener("accountsChanged", handleConnect);
+    };
   }, [handleConnect]);
 
   return (

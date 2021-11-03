@@ -1,3 +1,21 @@
 .bold {
     font-weight: bold;
 }
+
+.balance {
+    display: flex;
+    white-space: nowrap;
+    align-items: baseline;
+}
+
+.balance button.ui.button {
+    margin-left: 10px;
+}
+
+.balance span {
+    margin-right: 5px;
+}
+
+.ui.card > div.content.wallet-content {
+    padding: 16px 10px;
+}
