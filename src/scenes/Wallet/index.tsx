@@ -19,7 +19,7 @@ export const Wallet = () => {
     console.log(amount, address);
   };
 
-  if (!wallet.address || error) {
+  if (!wallet.address || !wallet.balance || error) {
     return <Redirect to="/" />;
   }
 
@@ -29,6 +29,7 @@ export const Wallet = () => {
         <WalletContent setIsTransferOpen={setIsTransferOpen} wallet={wallet} />
       </Card>
       <TransferModal
+        balance={wallet.balance}
         isTransferOpen={isTransferOpen}
         setIsTransferOpen={setIsTransferOpen}
         handleSubmitTransfer={handleSubmitTransfer}

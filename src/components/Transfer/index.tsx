@@ -1,38 +1,26 @@
-import React, { useState } from "react";
-import { Center, Close, Field, Form, FormButton, Modal } from "decentraland-ui";
+import React from "react";
+import { Center, Close, Modal } from "decentraland-ui";
 import "./Transfer.css";
+import { TransferForm } from "./TransferForm";
 
 export interface Transfer {
-  amount: number
-  address: string
+  amount: number;
+  address: string;
 }
 
 interface Props {
   isTransferOpen: boolean;
   setIsTransferOpen: (isTransferOpen: boolean) => void;
-  handleSubmitTransfer: (values: Transfer) => void
+  handleSubmitTransfer: (values: Transfer) => void;
+  balance: number;
 }
 
-export const TransferModal = ({ isTransferOpen, setIsTransferOpen, handleSubmitTransfer }: Props) => {
-  const [address, setAddress] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [amountHasError, setAmountHasError] = useState(false);
-  const [addressHasError, setAddressHasError] = useState(false);
-
-  const handleSubmit = () => {
-    if (amount === 0) {
-      setAmountHasError(true);
-    }
-
-    if (address === "") {
-      setAddressHasError(true);
-    }
-
-    if (addressHasError || amountHasError) return;
-
-    handleSubmitTransfer({address, amount});
-  };
-
+export const TransferModal = ({
+  isTransferOpen,
+  setIsTransferOpen,
+  handleSubmitTransfer,
+  balance,
+}: Props) => {
   return (
     <Modal
       open={isTransferOpen}
@@ -56,39 +44,7 @@ export const TransferModal = ({ isTransferOpen, setIsTransferOpen, handleSubmitT
         </Center>
       </Modal.Header>
       <Modal.Content>
-        <Form onSubmit={handleSubmit}>
-          <Field
-            type="text"
-            label="AMOUNT"
-            onChange={(e) => {
-              if (!isNaN(+e.target.value)) {
-                setAmount(parseInt(e.target.value));
-                setAmountHasError(false);
-              } else {
-                setAmountHasError(true);
-              }
-            }}
-            error={amountHasError}
-            message={amountHasError ? "Please insert a valid amount" : ""}
-          />
-          <Field
-            type="text"
-            label="ADDRESS"
-            onChange={(e) => {
-              if (e.target.value !== "") {
-                setAddress(e.target.value);
-                setAddressHasError(false);
-              } else {
-                setAddressHasError(true);
-              }
-            }}
-            error={addressHasError}
-            message={addressHasError ? "Please insert a valid address" : ""}
-          />
-          <FormButton primary fluid loading={false}>
-            Send
-          </FormButton>
-        </Form>
+        <TransferForm handleSubmit={handleSubmitTransfer} balance={balance} />
       </Modal.Content>
     </Modal>
   );
