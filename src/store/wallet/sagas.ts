@@ -1,8 +1,13 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
-import { IWallet } from "./types";
+import { FetchTransferRequestPayload, ITransfer, IWallet } from "./types";
 import { ethers } from "ethers";
-import { fetchWalletFailure, fetchWalletSuccess } from "./actions";
-import { FETCH_WALLET_REQUEST } from "./actionTypes";
+import {
+  fetchTransferFailure,
+  fetchTransferSuccess,
+  fetchWalletFailure,
+  fetchWalletSuccess,
+} from "./actions";
+import { FETCH_TRANSFER_REQUEST, FETCH_WALLET_REQUEST } from "./actionTypes";
 import { formatUnits } from "ethers/lib/utils";
 import { dummyAbi } from "../../utils/dummyAbi";
 import { getCurrentAddress } from "../../utils/metamaskUtils";
@@ -42,6 +47,24 @@ const getWallet = async () => {
   }
 };
 
+const transfer = async (payload: FetchTransferRequestPayload) => {
+  const { wallet, transfer } = payload;
+  const { amount, address: addressTo } = transfer;
+  try {
+    const result = await wallet.contract?.transfer(addressTo, amount);
+    if (!result.hash) {
+      throw new Error("There is an unexpected error");
+    }
+
+    return {
+      amount: amount,
+    };
+  } catch (e) {
+    console.log(e);
+    throw new Error("There is an unexpected error");
+  }
+};
+
 function* fetchWalletSaga() {
   try {
     const response: IWallet = yield call(getWallet);
@@ -51,17 +74,39 @@ function* fetchWalletSaga() {
       })
     );
   } catch (e: any) {
+    toast.error(e.message);
     yield put(
       fetchWalletFailure({
         error: e.message,
       })
     );
+  }
+}
+
+function* fetchTransferSaga(action: { payload: FetchTransferRequestPayload }) {
+  try {
+    const response: ITransfer = yield call(transfer, action.payload);
+    toast.success("Transfer success");
+    yield put(
+      fetchTransferSuccess({
+        amount: response.amount,
+      })
+    );
+  } catch (e: any) {
     toast.error(e.message);
+    yield put(
+      fetchTransferFailure({
+        error: e.message,
+      })
+    );
   }
 }
 
 function* todoSaga() {
-  yield all([takeLatest(FETCH_WALLET_REQUEST, fetchWalletSaga)]);
+  yield all([
+    takeLatest(FETCH_WALLET_REQUEST, fetchWalletSaga),
+    takeLatest(FETCH_TRANSFER_REQUEST as any, fetchTransferSaga),
+  ]);
 }
 
 export default todoSaga;

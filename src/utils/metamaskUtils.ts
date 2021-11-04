@@ -10,6 +10,14 @@ export const getCurrentAddress = async () => {
   }
 };
 
-window.ethereum.on("chainChanged", () => {
-  window.location.reload();
+window.ethereum.on("message", (e: any) => {
+  console.log("message", e);
+});
+
+window.ethereum.on("connect", (e: any) => {
+  console.log("connect", e);
+});
+
+window.ethereum.on("chainChanged", (e: any) => {
+  console.log("chainChanged", e);
 });

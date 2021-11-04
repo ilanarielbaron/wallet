@@ -10,9 +10,10 @@ export interface Transfer {
 interface Props {
   handleSubmit: (values: Transfer) => void;
   balance: number;
+  myAddress: string;
 }
 
-export const TransferForm = ({ handleSubmit, balance }: Props) => {
+export const TransferForm = ({ handleSubmit, balance, myAddress }: Props) => {
   const [address, setAddress] = useState("");
   const [amount, setAmount] = useState(0);
   const [amountError, setAmountError] = useState({
@@ -34,22 +35,24 @@ export const TransferForm = ({ handleSubmit, balance }: Props) => {
   };
 
   const validateAddress = () => {
-    if (amount === 0) {
+    let isValid = true;
+
+    if (amount <= 0) {
       setAmountError({
         hasError: true,
         message: "Please insert a valid amount",
       });
 
-      return false;
+      isValid = false;
     }
 
-    if (address === "") {
+    if (address === "" || address.toLowerCase() === myAddress.toLowerCase()) {
       setAddressError({
         hasError: true,
         message: "Please insert a valid address",
       });
 
-      return false;
+      isValid = false;
     }
 
     if (amount > balance) {
@@ -58,10 +61,10 @@ export const TransferForm = ({ handleSubmit, balance }: Props) => {
         message: "The amount exceed your balance",
       });
 
-      return false;
+      isValid = false;
     }
 
-    return true;
+    return isValid;
   };
 
   return (
@@ -75,7 +78,7 @@ export const TransferForm = ({ handleSubmit, balance }: Props) => {
             setAmountError({ hasError: false, message: "" });
           } else {
             setAmountError({
-              hasError: false,
+              hasError: true,
               message: "Please insert a valid amount",
             });
           }

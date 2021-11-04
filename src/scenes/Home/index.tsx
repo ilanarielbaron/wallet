@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getPendingSelector,
@@ -7,7 +7,6 @@ import {
 import { fetchWalletRequest } from "../../store/wallet/actions";
 import { Redirect } from "react-router-dom";
 import { Connect } from "../../components/Connect";
-import { ToastContainer } from "react-toastify";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -18,16 +17,8 @@ export const Home = () => {
     dispatch(fetchWalletRequest());
   }, [dispatch]);
 
-  useEffect(() => {
-    window.ethereum.on("accountsChanged", handleConnect);
-    return () => {
-      window.ethereum.removeListener("accountsChanged", handleConnect);
-    };
-  }, [handleConnect]);
-
   return (
     <>
-      <ToastContainer autoClose={2000} />
       {!wallet.isConnected ? (
         <Connect handleConnect={handleConnect} pending={pending} />
       ) : (

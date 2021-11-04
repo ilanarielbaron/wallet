@@ -2,17 +2,14 @@ import React from "react";
 import { Center, Close, Modal } from "decentraland-ui";
 import "./Transfer.css";
 import { TransferForm } from "./TransferForm";
-
-export interface Transfer {
-  amount: number;
-  address: string;
-}
+import { ITransfer } from "../../store/wallet/types";
 
 interface Props {
   isTransferOpen: boolean;
   setIsTransferOpen: (isTransferOpen: boolean) => void;
-  handleSubmitTransfer: (values: Transfer) => void;
+  handleSubmitTransfer: (values: ITransfer) => void;
   balance: number;
+  myAddress: string;
 }
 
 export const TransferModal = ({
@@ -20,6 +17,7 @@ export const TransferModal = ({
   setIsTransferOpen,
   handleSubmitTransfer,
   balance,
+  myAddress,
 }: Props) => {
   return (
     <Modal
@@ -44,7 +42,11 @@ export const TransferModal = ({
         </Center>
       </Modal.Header>
       <Modal.Content>
-        <TransferForm handleSubmit={handleSubmitTransfer} balance={balance} />
+        <TransferForm
+          handleSubmit={handleSubmitTransfer}
+          balance={balance}
+          myAddress={myAddress}
+        />
       </Modal.Content>
     </Modal>
   );

@@ -3,15 +3,23 @@ import {
   FETCH_WALLET_REQUEST,
   FETCH_WALLET_SUCCESS,
   FETCH_WALLET_FAILURE,
+  FETCH_TRANSFER_FAILURE,
+  FETCH_TRANSFER_SUCCESS,
+  FETCH_TRANSFER_REQUEST,
 } from "./actionTypes";
 
 export interface IWallet {
   address?: string;
-  balance?: number;
+  balance: number;
   isConnected: boolean;
   completed?: boolean;
   symbol?: string;
   contract?: Contract;
+}
+
+export interface ITransfer {
+  amount: number;
+  address: string;
 }
 
 export interface WalletState {
@@ -42,7 +50,38 @@ export type FetchWalletFailure = {
   payload: FetchWalletFailurePayload;
 };
 
+export interface FetchTransferRequestPayload {
+  wallet: IWallet;
+  transfer: ITransfer;
+}
+
+export interface FetchTransferSuccessPayload {
+  amount: number;
+}
+
+export interface FetchTransferFailurePayload {
+  error: string;
+}
+
+export interface FetchTransferRequest {
+  type: typeof FETCH_TRANSFER_REQUEST;
+  payload: FetchTransferRequestPayload;
+}
+
+export type FetchTransferSuccess = {
+  type: typeof FETCH_TRANSFER_SUCCESS;
+  payload: FetchTransferSuccessPayload;
+};
+
+export type FetchTransferFailure = {
+  type: typeof FETCH_TRANSFER_FAILURE;
+  payload: FetchTransferFailurePayload;
+};
+
 export type WalletActions =
   | FetchWalletRequest
   | FetchWalletSuccess
-  | FetchWalletFailure;
+  | FetchWalletFailure
+  | FetchTransferRequest
+  | FetchTransferSuccess
+  | FetchTransferFailure;

@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import {
-  getErrorSelector,
-  getWalletSelector,
-} from "../../store/wallet/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getWalletSelector } from "../../store/wallet/selectors";
 import { Redirect } from "react-router-dom";
 import { Card } from "decentraland-ui";
 import "./Wallet.css";
-import { Transfer, TransferModal } from "../../components/Transfer";
+import { TransferModal } from "../../components/Transfer";
 import { WalletContent } from "./WalletContent";
+import { ITransfer, IWallet } from "../../store/wallet/types";
+import { fetchTransferRequest } from "../../store/wallet/actions";
 
 export const Wallet = () => {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
-  const wallet = useSelector(getWalletSelector);
-  const error = useSelector(getErrorSelector);
+  const wallet: IWallet = useSelector(getWalletSelector);
+  const dispatch = useDispatch();
 
-  const handleSubmitTransfer = ({ amount, address }: Transfer) => {
-    console.log(amount, address);
+  const handleSubmitTransfer = (transferData: ITransfer) => {
+    dispatch(fetchTransferRequest({ wallet: wallet, transfer: transferData }));
   };
 
-  if (!wallet.address || !wallet.balance || error) {
+  if (!wallet.address || !wallet.balance) {
     return <Redirect to="/" />;
   }
 
@@ -33,6 +32,7 @@ export const Wallet = () => {
         isTransferOpen={isTransferOpen}
         setIsTransferOpen={setIsTransferOpen}
         handleSubmitTransfer={handleSubmitTransfer}
+        myAddress={wallet.address}
       />
     </>
   );
