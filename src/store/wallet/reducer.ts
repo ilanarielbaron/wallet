@@ -13,6 +13,7 @@ const initialState: WalletState = {
   pending: false,
   wallet: { isConnected: false, balance: 0 },
   error: null,
+  transferSuccess: false,
 };
 
 const reducer = (state = initialState, action: WalletActions) => {
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action: WalletActions) => {
       return {
         ...state,
         pending: true,
+        transferSuccess: false,
       };
     case FETCH_WALLET_SUCCESS:
       return {
@@ -28,6 +30,7 @@ const reducer = (state = initialState, action: WalletActions) => {
         pending: false,
         wallet: action.payload.wallet,
         error: null,
+        transferSuccess: false,
       };
     case FETCH_WALLET_FAILURE:
       return {
@@ -35,11 +38,13 @@ const reducer = (state = initialState, action: WalletActions) => {
         pending: false,
         wallet: { isConnected: false },
         error: action.payload.error,
+        transferSuccess: false,
       };
     case FETCH_TRANSFER_REQUEST:
       return {
         ...state,
         pending: true,
+        transferSuccess: false,
       };
     case FETCH_TRANSFER_SUCCESS:
       const newBalance = state.wallet.balance - action.payload.amount;
@@ -48,12 +53,14 @@ const reducer = (state = initialState, action: WalletActions) => {
         pending: false,
         wallet: { ...state.wallet, balance: newBalance },
         error: null,
+        transferSuccess: true,
       };
     case FETCH_TRANSFER_FAILURE:
       return {
         ...state,
         pending: false,
         error: action.payload.error,
+        transferSuccess: false,
       };
     default:
       return {

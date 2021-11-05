@@ -1,71 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { Field, Form, FormButton } from "decentraland-ui";
 import "./Transfer.css";
+import { useTransferForm } from "./useTransferForm";
+import { useIntl } from "react-intl";
 
 export interface Transfer {
   amount: number;
   address: string;
 }
 
-interface Props {
+interface TransferFormProps {
   handleSubmit: (values: Transfer) => void;
   balance: number;
   myAddress: string;
 }
 
-export const TransferForm = ({ handleSubmit, balance, myAddress }: Props) => {
-  const [address, setAddress] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [amountError, setAmountError] = useState({
-    hasError: false,
-    message: "",
-  });
-  const [addressError, setAddressError] = useState({
-    hasError: false,
-    message: "",
-  });
-
-  const handleFormSubmit = () => {
-    const isValid = validateAddress();
-    if (!isValid) return;
-
-    if (addressError.hasError || amountError.hasError) return;
-
-    handleSubmit({ address, amount });
-  };
-
-  const validateAddress = () => {
-    let isValid = true;
-
-    if (amount <= 0) {
-      setAmountError({
-        hasError: true,
-        message: "Please insert a valid amount",
-      });
-
-      isValid = false;
-    }
-
-    if (address === "" || address.toLowerCase() === myAddress.toLowerCase()) {
-      setAddressError({
-        hasError: true,
-        message: "Please insert a valid address",
-      });
-
-      isValid = false;
-    }
-
-    if (amount > balance) {
-      setAmountError({
-        hasError: true,
-        message: "The amount exceed your balance",
-      });
-
-      isValid = false;
-    }
-
-    return isValid;
-  };
+export const TransferForm = ({
+  handleSubmit,
+  balance,
+  myAddress,
+}: TransferFormProps) => {
+  const intl = useIntl();
+  const {
+    setAmount,
+    setAddress,
+    handleFormSubmit,
+    setAmountError,
+    amountError,
+    addressError,
+    setAddressError,
+  } = useTransferForm({ handleSubmit, myAddress, balance });
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -77,9 +41,10 @@ export const TransferForm = ({ handleSubmit, balance, myAddress }: Props) => {
             setAmount(parseInt(e.target.value));
             setAmountError({ hasError: false, message: "" });
           } else {
+            const error = intl.formatMessage({ id: "amountGenericError" });
             setAmountError({
               hasError: true,
-              message: "Please insert a valid amount",
+              message: error,
             });
           }
         }}
@@ -94,9 +59,10 @@ export const TransferForm = ({ handleSubmit, balance, myAddress }: Props) => {
             setAddress(e.target.value);
             setAddressError({ hasError: false, message: "" });
           } else {
+            const error = intl.formatMessage({ id: "addressGenericError" });
             setAddressError({
               hasError: true,
-              message: "Please insert a valid address",
+              message: error,
             });
           }
         }}

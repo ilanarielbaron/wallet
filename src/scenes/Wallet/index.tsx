@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getWalletSelector } from "../../store/wallet/selectors";
+import {
+  getTransferSuccessSelector,
+  getWalletSelector,
+} from "../../store/wallet/selectors";
 import { Redirect } from "react-router-dom";
 import { Card } from "decentraland-ui";
 import "./Wallet.css";
@@ -12,7 +15,14 @@ import { fetchTransferRequest } from "../../store/wallet/actions";
 export const Wallet = () => {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const wallet: IWallet = useSelector(getWalletSelector);
+  const isTransferSuccess = useSelector(getTransferSuccessSelector);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isTransferSuccess) {
+      setIsTransferOpen(false);
+    }
+  }, [isTransferSuccess]);
 
   const handleSubmitTransfer = (transferData: ITransfer) => {
     dispatch(fetchTransferRequest({ wallet: wallet, transfer: transferData }));

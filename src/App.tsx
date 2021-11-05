@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { fetchWalletRequest } from "./store/wallet/actions";
 import { useDispatch } from "react-redux";
+import { IntlProvider } from "react-intl";
+import { messages } from "./lang/messages";
 
 declare global {
   interface Window {
@@ -15,33 +17,36 @@ declare global {
 
 const App = () => {
   const [isDappEnabled, setIsDappEnabled] = useState(true);
+  const etherum = window.ethereum;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsDappEnabled(!!window.ethereum);
-  }, []);
+    setIsDappEnabled(!!etherum);
+  }, [etherum]);
 
   const handleConnect = useCallback(() => {
     dispatch(fetchWalletRequest());
   }, [dispatch]);
 
   useEffect(() => {
-    window.ethereum.on("accountsChanged", handleConnect);
+    window.ethereum?.on("accountsChanged", handleConnect);
     return () => {
-      window.ethereum.removeListener("accountsChanged", handleConnect);
+      window.ethereum?.removeListener("accountsChanged", handleConnect);
     };
   }, [handleConnect]);
 
   return (
     <>
-      <Navbar isFullscreen />
-      <Divider />
-      <ToastContainer autoClose={3500} />
-      <Router>
-        <Routes />
-        {!isDappEnabled && <Redirect to="/no-wallet" />}
-      </Router>
-      <Footer />
+      <IntlProvider locale="en" defaultLocale="en" messages={messages["en"]}>
+        <Navbar isFullscreen />
+        <Divider />
+        <ToastContainer autoClose={3500} />
+        <Router>
+          <Routes />
+          {!isDappEnabled && <Redirect to="/no-wallet" />}
+        </Router>
+        <Footer />
+      </IntlProvider>
     </>
   );
 };

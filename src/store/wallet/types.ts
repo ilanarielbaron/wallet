@@ -26,6 +26,7 @@ export interface WalletState {
   pending: boolean;
   wallet: IWallet;
   error: string | null;
+  transferSuccess: boolean;
 }
 
 export interface FetchWalletSuccessPayload {

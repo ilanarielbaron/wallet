@@ -10,6 +10,9 @@ const getWallet = (state: AppState) => state.wallet.wallet;
 // @ts-ignore
 const getError = (state: AppState) => state.wallet.error;
 
+// @ts-ignore
+const getTransferSuccess = (state: AppState) => state.wallet.transferSuccess;
+
 export const getWalletSelector = createSelector(getWallet, (wallet) => wallet);
 
 export const getPendingSelector = createSelector(
@@ -18,3 +21,8 @@ export const getPendingSelector = createSelector(
 );
 
 export const getErrorSelector = createSelector(getError, (error) => error);
+
+export const getTransferSuccessSelector = createSelector(
+  getTransferSuccess,
+  (error) => error
+);

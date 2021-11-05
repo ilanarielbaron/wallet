@@ -1,3 +1,8 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
-export const NoWallet = () => <div>This is not a dApp-enabled browser</div>;
+export const NoWallet = () => (
+  <div>
+    <FormattedMessage id="noWalletMessage" />
+  </div>
+);

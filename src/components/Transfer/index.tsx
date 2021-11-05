@@ -3,8 +3,9 @@ import { Center, Close, Modal } from "decentraland-ui";
 import "./Transfer.css";
 import { TransferForm } from "./TransferForm";
 import { ITransfer } from "../../store/wallet/types";
+import { FormattedMessage } from "react-intl";
 
-interface Props {
+interface TransferModalProps {
   isTransferOpen: boolean;
   setIsTransferOpen: (isTransferOpen: boolean) => void;
   handleSubmitTransfer: (values: ITransfer) => void;
@@ -18,7 +19,7 @@ export const TransferModal = ({
   handleSubmitTransfer,
   balance,
   myAddress,
-}: Props) => {
+}: TransferModalProps) => {
   return (
     <Modal
       open={isTransferOpen}
@@ -38,7 +39,9 @@ export const TransferModal = ({
               setIsTransferOpen(false);
             }}
           />
-          <p className="description">Send tokens to an account</p>
+          <p className="description">
+            <FormattedMessage id="transferDescription" />
+          </p>
         </Center>
       </Modal.Header>
       <Modal.Content>
