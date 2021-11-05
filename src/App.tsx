@@ -17,12 +17,12 @@ declare global {
 
 const App = () => {
   const [isDappEnabled, setIsDappEnabled] = useState(true);
-  const etherum = window.ethereum;
+  const ethereum = window.ethereum;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsDappEnabled(!!etherum);
-  }, [etherum]);
+    setIsDappEnabled(!!ethereum);
+  }, [ethereum]);
 
   const handleConnect = useCallback(() => {
     dispatch(fetchWalletRequest());
