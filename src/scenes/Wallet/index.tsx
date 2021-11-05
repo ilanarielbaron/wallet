@@ -24,6 +24,17 @@ export const Wallet = () => {
     }
   }, [isTransferSuccess]);
 
+  useEffect(() => {
+    window.ethereum?.on("accountsChanged", () => {
+      setIsTransferOpen(false);
+    });
+    return () => {
+      window.ethereum?.removeListener("accountsChanged", () => {
+        setIsTransferOpen(false);
+      });
+    };
+  }, []);
+
   const handleSubmitTransfer = (transferData: ITransfer) => {
     dispatch(fetchTransferRequest({ wallet: wallet, transfer: transferData }));
   };
