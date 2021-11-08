@@ -13,7 +13,7 @@ import { dummyAbi } from "../../utils/dummyAbi";
 import { getCurrentAddress } from "../../utils/metamaskUtils";
 import { toast } from "react-toastify";
 
-const getWallet = async () => {
+export const getWallet = async () => {
   const address = await getCurrentAddress();
 
   if (!address) {
@@ -41,31 +41,34 @@ const getWallet = async () => {
       symbol: symbol,
       contract: contract,
     };
-  } catch (e) {
-    console.log(e);
-    throw new Error("There is an unexpected error");
+  } catch (e: any) {
+    throw new Error(e.message ?? 'There is an unexpected error');
   }
 };
 
-const transfer = async (payload: FetchTransferRequestPayload) => {
+export const transfer = async (payload: FetchTransferRequestPayload) => {
   const { wallet, transfer } = payload;
   const { amount, address: addressTo } = transfer;
   try {
-    const result = await wallet.contract?.transfer(addressTo, amount);
+    if (!wallet.contract) {
+      throw new Error('There is no wallet connected');
+    }
+
+    const result = await wallet.contract.transfer(addressTo, amount);
+
     if (!result.hash) {
-      throw new Error("There is an unexpected error");
+      throw new Error("The transfer failed");
     }
 
     return {
       amount: amount,
     };
-  } catch (e) {
-    console.log(e);
-    throw new Error("There is an unexpected error");
+  } catch (e: any) {
+    throw new Error(e.message ?? 'There is an unexpected error');
   }
 };
 
-function* fetchWalletSaga() {
+export function* fetchWalletSaga() {
   try {
     const response: IWallet = yield call(getWallet);
     yield put(
@@ -83,7 +86,7 @@ function* fetchWalletSaga() {
   }
 }
 
-function* fetchTransferSaga(action: { payload: FetchTransferRequestPayload }) {
+export function* fetchTransferSaga(action: { payload: FetchTransferRequestPayload }) {
   try {
     const response: ITransfer = yield call(transfer, action.payload);
     toast.success("Transfer success");
@@ -102,11 +105,11 @@ function* fetchTransferSaga(action: { payload: FetchTransferRequestPayload }) {
   }
 }
 
-function* todoSaga() {
+function* rootSaga() {
   yield all([
     takeLatest(FETCH_WALLET_REQUEST, fetchWalletSaga),
     takeLatest(FETCH_TRANSFER_REQUEST as any, fetchTransferSaga),
   ]);
 }
 
-export default todoSaga;
+export default rootSaga;

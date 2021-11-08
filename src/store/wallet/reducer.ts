@@ -9,7 +9,7 @@ import {
 
 import { WalletActions, WalletState } from "./types";
 
-const initialState: WalletState = {
+export const initialState: WalletState = {
   pending: false,
   wallet: { isConnected: false, balance: 0 },
   error: null,
