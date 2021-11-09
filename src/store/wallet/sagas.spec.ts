@@ -50,7 +50,7 @@ describe("Making a transfer", () => {
     it("No wallet in the state", () => {
       return expectSaga(rootSaga)
         .provide([[select(getWallet), { isConnected: false }]])
-        .put(fetchTransferFailure({ error: "There is no wallet connected" }))
+        .put(fetchTransferFailure({ error: "noWalletConnected" }))
         .dispatch(fetchTransferRequest({ transfer: testTransfer, wallet }))
         .run({ silenceTimeout: true });
     });

@@ -36,7 +36,7 @@ const reducer = (state = initialState, action: WalletActions) => {
       return {
         ...state,
         pending: false,
-        wallet: { isConnected: false },
+        wallet: { ...state.wallet, isConnected: false },
         error: action.payload.error,
         transferSuccess: false,
       };

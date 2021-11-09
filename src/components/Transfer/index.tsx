@@ -20,38 +20,36 @@ export const TransferModal = ({
   handleSubmitTransfer,
   balance,
   myAddress,
-}: TransferModalProps) => {
-  return (
-    <Modal
-      open={isTransferOpen}
-      closeOnTriggerClick
-      closeOnEscape
-      centered
-      size="tiny"
-      onClose={() => {
-        setIsTransferOpen(false);
-      }}
-    >
-      <Modal.Header>
-        <Center>
-          <div className="title">Transfer</div>
-          <Close
-            onClick={() => {
-              setIsTransferOpen(false);
-            }}
-          />
-          <p className="description">
-            <FormattedMessage id="transferDescription" />
-          </p>
-        </Center>
-      </Modal.Header>
-      <Modal.Content>
-        <TransferForm
-          handleSubmit={handleSubmitTransfer}
-          balance={balance}
-          myAddress={myAddress}
+}: TransferModalProps) => (
+  <Modal
+    open={isTransferOpen}
+    closeOnTriggerClick
+    closeOnEscape
+    centered
+    size="tiny"
+    onClose={() => {
+      setIsTransferOpen(false);
+    }}
+  >
+    <Modal.Header>
+      <Center>
+        <div className="title">Transfer</div>
+        <Close
+          onClick={() => {
+            setIsTransferOpen(false);
+          }}
         />
-      </Modal.Content>
-    </Modal>
-  );
-};
+        <p className="description">
+          <FormattedMessage id="transferDescription" />
+        </p>
+      </Center>
+    </Modal.Header>
+    <Modal.Content>
+      <TransferForm
+        handleSubmit={handleSubmitTransfer}
+        balance={balance}
+        myAddress={myAddress}
+      />
+    </Modal.Content>
+  </Modal>
+);

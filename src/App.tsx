@@ -33,7 +33,6 @@ const App = () => {
 
   useEffect(() => {
     if (error) {
-        console.log(error)
       toast.error(
         intl.formatMessage({
           id: error,
