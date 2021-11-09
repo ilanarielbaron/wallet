@@ -5,9 +5,10 @@ import { Routes } from "./components/Routes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { fetchWalletRequest } from "./store/wallet/actions";
-import { useDispatch } from "react-redux";
-import { IntlProvider } from "react-intl";
-import { messages } from "./lang/messages";
+import { useDispatch, useSelector } from "react-redux";
+import { useIntl } from "react-intl";
+import { getErrorSelector } from "./store/wallet/selectors";
+import { toast } from "react-toastify";
 
 declare global {
   interface Window {
@@ -19,14 +20,28 @@ const App = () => {
   const [isDappEnabled, setIsDappEnabled] = useState(true);
   const ethereum = window.ethereum;
   const dispatch = useDispatch();
+  const error = useSelector(getErrorSelector);
+  const intl = useIntl();
+
+  const handleConnect = useCallback(() => {
+    dispatch(fetchWalletRequest());
+  }, [dispatch]);
 
   useEffect(() => {
     setIsDappEnabled(!!ethereum);
   }, [ethereum]);
 
-  const handleConnect = useCallback(() => {
-    dispatch(fetchWalletRequest());
-  }, [dispatch]);
+  useEffect(() => {
+    if (error) {
+        console.log(error)
+      toast.error(
+        intl.formatMessage({
+          id: error,
+          defaultMessage: "There is an unexpected error",
+        })
+      );
+    }
+  }, [error, intl]);
 
   useEffect(() => {
     window.ethereum?.on("accountsChanged", handleConnect);
@@ -37,16 +52,14 @@ const App = () => {
 
   return (
     <>
-      <IntlProvider locale="en" defaultLocale="en" messages={messages["en"]}>
-        <Navbar isFullscreen />
-        <Divider />
-        <ToastContainer autoClose={3500} />
-        <Router>
-          <Routes />
-          {!isDappEnabled && <Redirect to="/no-wallet" />}
-        </Router>
-        <Footer />
-      </IntlProvider>
+      <Navbar isFullscreen />
+      <Divider />
+      <ToastContainer autoClose={3500} />
+      <Router>
+        <Routes />
+        {!isDappEnabled && <Redirect to="/no-wallet" />}
+      </Router>
+      <Footer />
     </>
   );
 };

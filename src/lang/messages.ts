@@ -6,5 +6,8 @@ export const messages = {
     amountGenericError: "Please insert a valid amount",
     amountExceedError: "The amount exceed your balance",
     addressGenericError: "Please insert a valid address",
+    noWalletConnected: "There is no wallet connected",
+    transferFailed: "The transfer failed",
+    genericError: "There is an unexpected error",
   },
 };

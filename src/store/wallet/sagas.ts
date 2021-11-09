@@ -17,13 +17,13 @@ export const getWallet = async () => {
   const address = await getCurrentAddress();
 
   if (!address) {
-    throw new Error("Please connect your metamask account");
+    throw new Error("connectAccountError");
   }
 
   const dummyAddress = process.env.REACT_APP_DUMMY_ADDRESS;
 
   if (!dummyAddress) {
-    throw new Error("There is an unexpected error");
+    throw new Error("genericError");
   }
 
   try {
@@ -42,7 +42,7 @@ export const getWallet = async () => {
       contract: contract,
     };
   } catch (e: any) {
-    throw new Error(e.message ?? "There is an unexpected error");
+    throw new Error(e.message ?? "genericError");
   }
 };
 
@@ -51,20 +51,20 @@ export const transfer = async (payload: FetchTransferRequestPayload) => {
   const { amount, address: addressTo } = transfer;
   try {
     if (!wallet.contract) {
-      throw new Error("There is no wallet connected");
+      throw new Error("noWalletConnected");
     }
 
     const result = await wallet.contract.transfer(addressTo, amount);
 
     if (!result.hash) {
-      throw new Error("The transfer failed");
+      throw new Error("transferFailed");
     }
 
     return {
       amount: amount,
     };
   } catch (e: any) {
-    throw new Error(e.message ?? "There is an unexpected error");
+    throw new Error(e.message ?? "genericError");
   }
 };
 
@@ -77,7 +77,6 @@ export function* fetchWalletSaga() {
       })
     );
   } catch (e: any) {
-    toast.error(e.message);
     yield put(
       fetchWalletFailure({
         error: e.message,
@@ -98,7 +97,6 @@ export function* fetchTransferSaga(action: {
       })
     );
   } catch (e: any) {
-    toast.error(e.message);
     yield put(
       fetchTransferFailure({
         error: e.message,
