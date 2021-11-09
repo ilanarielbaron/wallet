@@ -8,6 +8,7 @@ interface UseTransferProps {
   balance: number;
 }
 
+/** Custom hook to use in the transfer form  */
 export const useTransferForm = ({
   handleSubmit,
   myAddress,
@@ -25,6 +26,7 @@ export const useTransferForm = ({
   });
   const intl = useIntl();
 
+  //Address validation before sending the transfer
   const validateAddress = () => {
     let isValid = true;
 

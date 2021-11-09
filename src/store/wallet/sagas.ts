@@ -42,7 +42,7 @@ export const getWallet = async () => {
       contract: contract,
     };
   } catch (e: any) {
-    throw new Error(e.message ?? 'There is an unexpected error');
+    throw new Error(e.message ?? "There is an unexpected error");
   }
 };
 
@@ -51,7 +51,7 @@ export const transfer = async (payload: FetchTransferRequestPayload) => {
   const { amount, address: addressTo } = transfer;
   try {
     if (!wallet.contract) {
-      throw new Error('There is no wallet connected');
+      throw new Error("There is no wallet connected");
     }
 
     const result = await wallet.contract.transfer(addressTo, amount);
@@ -64,7 +64,7 @@ export const transfer = async (payload: FetchTransferRequestPayload) => {
       amount: amount,
     };
   } catch (e: any) {
-    throw new Error(e.message ?? 'There is an unexpected error');
+    throw new Error(e.message ?? "There is an unexpected error");
   }
 };
 
@@ -86,7 +86,9 @@ export function* fetchWalletSaga() {
   }
 }
 
-export function* fetchTransferSaga(action: { payload: FetchTransferRequestPayload }) {
+export function* fetchTransferSaga(action: {
+  payload: FetchTransferRequestPayload;
+}) {
   try {
     const response: ITransfer = yield call(transfer, action.payload);
     toast.success("Transfer success");

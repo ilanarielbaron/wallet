@@ -2,13 +2,13 @@ import { createSelector } from "reselect";
 import { AppState } from "../rootReducer";
 
 // @ts-ignore
-const getPending = (state: AppState) => state.wallet.pending;
+export const getPending = (state: AppState) => state.wallet.pending;
 
 // @ts-ignore
-const getWallet = (state: AppState) => state.wallet.wallet;
+export const getWallet = (state: AppState) => state.wallet.wallet;
 
 // @ts-ignore
-const getError = (state: AppState) => state.wallet.error;
+export const getError = (state: AppState) => state.wallet.error;
 
 // @ts-ignore
 const getTransferSuccess = (state: AppState) => state.wallet.transferSuccess;

@@ -5,7 +5,8 @@ import { select } from "redux-saga-test-plan/matchers";
 import { ITransfer, IWallet } from "./types";
 import {
   fetchTransferFailure,
-  fetchTransferRequest, fetchTransferSuccess,
+  fetchTransferRequest,
+  fetchTransferSuccess,
   fetchWalletFailure,
   fetchWalletRequest,
   fetchWalletSuccess,
@@ -71,7 +72,10 @@ describe("Making a transfer", () => {
       return expectSaga(rootSaga)
         .provide([
           [select(getWallet), { isConnected: false }],
-          [matchers.call.fn(transfer), Promise.resolve({amount: testTransfer.amount})],
+          [
+            matchers.call.fn(transfer),
+            Promise.resolve({ amount: testTransfer.amount }),
+          ],
         ])
         .put(fetchTransferSuccess({ amount: testTransfer.amount }))
         .dispatch(fetchTransferRequest({ transfer: testTransfer, wallet }))

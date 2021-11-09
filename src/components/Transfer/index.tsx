@@ -13,6 +13,7 @@ interface TransferModalProps {
   myAddress: string;
 }
 
+/** Modal which displays the transfer form to send tokens */
 export const TransferModal = ({
   isTransferOpen,
   setIsTransferOpen,

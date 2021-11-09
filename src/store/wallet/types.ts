@@ -12,7 +12,6 @@ export interface IWallet {
   address?: string;
   balance: number;
   isConnected: boolean;
-  completed?: boolean;
   symbol?: string;
   contract?: Contract;
 }

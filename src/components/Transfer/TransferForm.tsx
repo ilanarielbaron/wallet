@@ -15,6 +15,7 @@ interface TransferFormProps {
   myAddress: string;
 }
 
+/** Form to fill and send the transfer*/
 export const TransferForm = ({
   handleSubmit,
   balance,

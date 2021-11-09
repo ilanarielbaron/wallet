@@ -1,3 +1,4 @@
+/** Get from Metamask the current account address */
 export const getCurrentAddress = async () => {
   try {
     const [address] = await window.ethereum?.request({
@@ -10,6 +11,7 @@ export const getCurrentAddress = async () => {
   }
 };
 
+/** Service to listen if the chain is changed on Metamask */
 window.ethereum?.on("chainChanged", () => {
   window.location.reload();
 });

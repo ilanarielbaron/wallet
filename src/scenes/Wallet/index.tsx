@@ -12,6 +12,7 @@ import { WalletContent } from "./WalletContent";
 import { ITransfer, IWallet } from "../../store/wallet/types";
 import { fetchTransferRequest } from "../../store/wallet/actions";
 
+/** Wallet component which shows the account and the transfer modal */
 export const Wallet = () => {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const wallet: IWallet = useSelector(getWalletSelector);
@@ -24,6 +25,7 @@ export const Wallet = () => {
     }
   }, [isTransferSuccess]);
 
+  /** Effect to check if is there any changes in the metamask accounts */
   useEffect(() => {
     window.ethereum?.on("accountsChanged", () => {
       setIsTransferOpen(false);
