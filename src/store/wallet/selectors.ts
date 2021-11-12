@@ -11,7 +11,8 @@ export const getWallet = (state: AppState) => state.wallet.wallet;
 export const getError = (state: AppState) => state.wallet.error;
 
 // @ts-ignore
-export const getTransferSuccess = (state: AppState) => state.wallet.transferSuccess;
+export const getTransferSuccess = (state: AppState) =>
+  state.wallet.transferSuccess;
 
 export const getWalletSelector = createSelector(getWallet, (wallet) => wallet);
 

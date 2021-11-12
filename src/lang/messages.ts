@@ -9,5 +9,6 @@ export const messages = {
     noWalletConnected: "There is no wallet connected",
     transferFailed: "The transfer failed",
     genericError: "There is an unexpected error",
+    countdown: "Countdown failed",
   },
 };

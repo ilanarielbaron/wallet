@@ -4,7 +4,7 @@ import {
   FETCH_WALLET_SUCCESS,
   FETCH_TRANSFER_SUCCESS,
   FETCH_TRANSFER_REQUEST,
-  FETCH_TRANSFER_FAILURE,
+  FETCH_TRANSFER_FAILURE
 } from "./actionTypes";
 import {
   FetchWalletRequest,

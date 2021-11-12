@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getError,
   getTransferSuccessSelector,
   getWalletSelector,
 } from "../../store/wallet/selectors";
@@ -17,6 +18,7 @@ export const Wallet = () => {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const wallet: IWallet = useSelector(getWalletSelector);
   const isTransferSuccess = useSelector(getTransferSuccessSelector);
+  const error = useSelector(getError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,6 +26,12 @@ export const Wallet = () => {
       setIsTransferOpen(false);
     }
   }, [isTransferSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      setIsTransferOpen(false);
+    }
+  }, [error]);
 
   /** Effect to check if is there any changes in the metamask accounts */
   useEffect(() => {

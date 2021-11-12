@@ -63,6 +63,10 @@ export interface FetchTransferFailurePayload {
   error: string;
 }
 
+export interface FetchAddressChangedPayload {
+  address: string;
+}
+
 export interface FetchTransferRequest {
   type: typeof FETCH_TRANSFER_REQUEST;
   payload: FetchTransferRequestPayload;
